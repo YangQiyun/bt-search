@@ -1,6 +1,8 @@
 package com.edu.seu.BHTServer;
 
 
+import com.edu.seu.Util.BEncoding;
+import com.edu.seu.Util.ConvertUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -9,6 +11,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+
+import java.net.InetSocketAddress;
 
 @ChannelHandler.Sharable
 @Slf4j
@@ -27,6 +31,13 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("DhtServerHandler.channelActive");
+        byte[] bytes1="d1:ad2:id20:".getBytes();
+        byte[] bytes2= ConvertUtil.getNode();
+        byte[] bytes3=":target20:".getBytes();
+        byte[] byte4=ConvertUtil.getNode();
+        byte[] bytes5="e1:q9:find_node1:t2:aa1:y1:qe".getBytes();
+        ByteBuf buf=Unpooled.wrappedBuffer(bytes1,bytes2,bytes3,byte4,bytes5);
+        ctx.channel().writeAndFlush(new DatagramPacket(buf,new InetSocketAddress("dht.transmissionbt.com", 6881)));
 
     }
 

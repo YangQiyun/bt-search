@@ -25,8 +25,8 @@ public class BtRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         dhtServer.init();
-
         InetSocketAddress address1 = new InetSocketAddress("router.bittorrent.com", 6881);
         InetSocketAddress address = new InetSocketAddress("dht.transmissionbt.com", 6881);
+
     }
 }

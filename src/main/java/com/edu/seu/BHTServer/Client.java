@@ -27,6 +27,7 @@ public class Client {
            log.info(future.isSuccess()?"success":"fail");
            future.channel().writeAndFlush(new DatagramPacket(Unpooled.wrappedBuffer(content.getBytes()),new InetSocketAddress("127.0.0.1",8000))).addListener(new clientListener());
            //由于是立即返回所以是fail log.info(future.isSuccess()?"write success":"write fail");
+            future.channel().closeFuture().sync();
             log.info("client close");
         }catch (InterruptedException e){
             log.error("error :"+e.getMessage());
@@ -66,8 +67,8 @@ public class Client {
         @Override
         public void flush(ChannelHandlerContext ctx) throws Exception {
             super.flush(ctx);
-           // ctx.channel().notify();
-
+            log.info("flush is finished");
+            ctx.channel().close();
         }
 
 
@@ -91,7 +92,7 @@ public class Client {
                 log.info("this is a success future");
             }
             //log.info("this is the cause "+future.cause().getMessage());
-            future.channel().closeFuture().sync();
+            future.channel().close();
         }
 
 

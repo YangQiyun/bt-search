@@ -2,11 +2,9 @@ package com.edu.seu.BHTServer;
 
 import com.edu.seu.Configuration.InitConfig;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +38,7 @@ public class DhtServer {
             if(ServerGroup!=null)
                 ServerGroup.shutdownGracefully();
         }
-
-
     }
+
+
 }
