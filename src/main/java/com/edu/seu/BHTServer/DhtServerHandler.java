@@ -13,6 +13,10 @@ import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.Map;
+import java.util.TreeMap;
+
+import static com.edu.seu.Util.ConvertUtil.HexString2Byte;
 
 @ChannelHandler.Sharable
 @Slf4j
@@ -31,12 +35,27 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("DhtServerHandler.channelActive");
+        BEncoding bEncoding=new BEncoding();
+        String target="1619ecc9373c3639f4ee3e261638f29b33a6cbd6";
+        byte[] result=HexString2Byte(target);
+        String temp=new String(result, CharsetUtil.ISO_8859_1);
+
         byte[] bytes1="d1:ad2:id20:".getBytes();
         byte[] bytes2= ConvertUtil.getNode();
         byte[] bytes3=":target20:".getBytes();
         byte[] byte4=ConvertUtil.getNode();
         byte[] bytes5="e1:q9:find_node1:t2:aa1:y1:qe".getBytes();
-        ByteBuf buf=Unpooled.wrappedBuffer(bytes1,bytes2,bytes3,byte4,bytes5);
+        Map<String,BEncoding.btDecodeResult> map=new TreeMap<>();
+        map.put("t",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"aa"));
+        map.put("y",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"q"));
+        map.put("q",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"find_node"));
+        Map<String,BEncoding.btDecodeResult> small=new TreeMap<>();
+        small.put("id",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
+        small.put("target",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
+        map.put("a",new BEncoding.btDecodeResult(BEncoding.beType.Dictionary,small));
+        String what=bEncoding.encodingObject(map);
+        //ByteBuf buf=Unpooled.wrappedBuffer(bytes1,bytes2,bytes3,byte4,bytes5);
+        ByteBuf buf=Unpooled.wrappedBuffer(what.getBytes(CharsetUtil.ISO_8859_1));
         ctx.channel().writeAndFlush(new DatagramPacket(buf,new InetSocketAddress("dht.transmissionbt.com", 6881)));
 
     }
@@ -44,6 +63,7 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket msg) throws Exception {
         log.info("DhtServerHandler.messageReceived");
+        byte[] result=getBytes(msg);
 
         ctx.writeAndFlush(getBytes(msg));
     }
@@ -53,8 +73,7 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
         ByteBuf byteBuf = packet.content();
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
-
-        log.info("{}1-收到消息,发送者:{},未解码消息内容:{}", packet.sender(), new String(bytes, CharsetUtil.UTF_8));
+        log.info("{}-收到消息,发送者:{},未解码消息内容:{}", packet.sender(), new String(bytes, CharsetUtil.ISO_8859_1));
         return bytes;
     }
 

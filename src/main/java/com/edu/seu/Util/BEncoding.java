@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import static com.edu.seu.Util.ConvertUtil.HexString2Byte;
+
 /*
 * 实现BE的编码方式
 * */
 public class BEncoding {
 
-    public static enum beType{
+    public static  enum beType{
         ByteString,
         Integer,
         List,
@@ -23,7 +25,7 @@ public class BEncoding {
 
     private String className=this.getClass().getName();
 
-    private Charset becharset= CharsetUtil.ISO_8859_1;
+    private  Charset becharset= CharsetUtil.ISO_8859_1;
 
     private static final String interval=":";
     private static final String allend="e";
@@ -38,17 +40,17 @@ public class BEncoding {
     * */
 
     //Byte String 字节串的格式为 字节串长度:内容，其中 字节串长度 是 ASCII 编码格式的整数字符串，单位为字节
-    private String encodingByteString(String value){
+    private  String encodingByteString(String value){
         return value.getBytes(becharset).length+interval+value;
     }
 
     //Integer 整数的格式为 i整数e，其中 整数 是 ASCII 编码格式的整数字符串
-    private String encodingInteger(int value){
+    private  String encodingInteger(int value){
         return integerStart+String.valueOf(value)+allend;
     }
 
     //List 列表的格式为 l不限数量个BE量e（小写L开头）
-    private String encodingList(List<Object> value){
+    private  String encodingList(List<Object> value){
         StringBuilder result=new StringBuilder();
         result.append(listStart);
         for(Object child:value){
@@ -69,7 +71,7 @@ public class BEncoding {
     }
 
     //进行类型选择编码
-    private String encodingObject(Object value){
+    public   String encodingObject(Object value){
         if(value instanceof String)
             return encodingByteString((String)value);
         if(value instanceof Integer)
@@ -78,6 +80,16 @@ public class BEncoding {
             return encodingList((List<Object>) value);
         if(value instanceof Map)
             return encodingDictionary((Map<String,Object>)value);
+        if(value instanceof btDecodeResult) {
+            if (((btDecodeResult) value).type == beType.ByteString)
+                return encodingByteString((String) ((btDecodeResult) value).value);
+            if (((btDecodeResult) value).type == beType.Integer)
+                return encodingInteger((Integer)((btDecodeResult) value).value);
+            if (((btDecodeResult) value).type == beType.List)
+                return encodingList((List<Object>) ((btDecodeResult) value).value);
+            if (((btDecodeResult) value).type == beType.Dictionary)
+                return encodingDictionary((Map<String, Object>) ((btDecodeResult) value).value);
+        }
         throw new RuntimeException("encoding becoding format error");
     }
 
@@ -92,19 +104,16 @@ public class BEncoding {
         public btDecodeResult(beType type){
             this.type=type;
         }
+
+        public btDecodeResult(beType type,Object value){
+            this.type=type;
+            this.value=value;
+        }
+
         public Object value;
         public beType type;
         private int endIndex;
 
-        @Override
-        public String toString() {
-            if(type==beType.ByteString)
-                return (String)value;
-            if(type==beType.Integer)
-                return String.valueOf((Integer)value);
-
-            return value.toString();
-        }
     }
 
     //ByteString 不需要再验证格式正确性
@@ -140,7 +149,7 @@ public class BEncoding {
 
     //Integer
     private btDecodeResult decodingInteger(byte[] value,int start){
-        btDecodeResult result=new btDecodeResult(beType.ByteString);
+        btDecodeResult result=new btDecodeResult(beType.Integer);
 
         //首个字符提取进行判断
         char firstChar=new String(value,start,1,becharset).charAt(0);
@@ -173,7 +182,7 @@ public class BEncoding {
     }
 
     //进行任意类型选解码
-    private btDecodeResult decodingObject(byte[] value,int start) throws BtException {
+    public   btDecodeResult decodingObject(byte[] value,int start) throws BtException {
         btDecodeResult result=new btDecodeResult();
         //首个字符提取进行判断
         char firstChar=new String(value,start,1,becharset).charAt(0);
@@ -187,19 +196,11 @@ public class BEncoding {
         }
         //如果可能是bytestring
         if(firstChar>='0'&&firstChar<='9') {
-            result.type=beType.ByteString;
-            btDecodeResult element=decodingByteString(value,start);
-            result.value=element;
-            result.endIndex=element.endIndex;
-            return result;
+            return decodingByteString(value,start);
         }
         //如果是integer
         if(integerStart.charAt(0)==firstChar){
-            result.type=beType.Integer;
-            btDecodeResult element=decodingInteger(value,start);
-            result.value=element;
-            result.endIndex=element.endIndex;
-            return result;
+            return decodingInteger(value,start);
         }
         //如果是list
         if(listStart.charAt(0)==firstChar){
@@ -232,7 +233,7 @@ public class BEncoding {
                String key=null;
                //如果是betystring是合理结构，如果是end则map结束，如果是其他则error
                if(element.type==beType.ByteString){
-                   key=element.value.toString();
+                   key=(String)element.value;
                }else {
                    if(element.type==beType.End) {
                        result.endIndex = elementEnd;
@@ -257,7 +258,9 @@ public class BEncoding {
         throw new BtException(className+" - decodingObject: error in structure");
     }
 
-
+    public static BEncoding.btDecodeResult newStringResult(String value){
+        return new BEncoding.btDecodeResult(BEncoding.beType.ByteString,value);
+    }
 
 
     public static void main(String [] args){
@@ -276,5 +279,30 @@ public class BEncoding {
         String tt=String.valueOf(num);
         */
         BEncoding.btDecodeResult result=bEncoding.decodingObject(bEncoding.encodingObject(content).getBytes(CharsetUtil.ISO_8859_1),0);
+        if(result.type==beType.Dictionary){
+            Map<String,btDecodeResult> temp= (Map<String, btDecodeResult>) result.value;
+            for(Map.Entry<String,btDecodeResult> entry:temp.entrySet()){
+                if(entry.getValue().type==beType.Integer)
+                    System.out.println(entry.getKey()+" "+(Integer)entry.getValue().value);
+                if(entry.getValue().type==beType.ByteString)
+                    System.out.println(entry.getKey()+" "+(String) entry.getValue().value);
+            }
+        }
+
+
+
+        String target="1619ecc9373c3639f4ee3e261638f29b33a6cbd6";
+        byte[] gg=HexString2Byte(target);
+        String temp=new String(gg, CharsetUtil.ISO_8859_1);
+
+        Map<String,BEncoding.btDecodeResult> map=new TreeMap<>();
+        map.put("t",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"aa"));
+        map.put("y",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"q"));
+        map.put("q",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"find_node"));
+        Map<String,BEncoding.btDecodeResult> small=new TreeMap<>();
+        small.put("id",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
+        small.put("target",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
+        map.put("a",new BEncoding.btDecodeResult(BEncoding.beType.Dictionary,small));
+        String what=bEncoding.encodingObject(map);
     }
 }

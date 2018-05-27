@@ -57,7 +57,7 @@ public class ConvertUtil {
     /*
     * 将byte二进制串转化为HexString格式
     * */
-    public   String Byte2HexString(byte[] target){
+    public static String Byte2HexString(byte[] target){
         StringBuilder stringBuilder=new StringBuilder(target.length*2);
         //进行有效性判断
         if(target==null||target.length<=0)
@@ -81,8 +81,9 @@ public class ConvertUtil {
     public static void main(String []args){
         String target="1619ecc9373c3639f4ee3e261638f29b33a6cbd6";
         byte[] result=HexString2Byte(target);
-        String b=new String(result,0,1, CharsetUtil.ISO_8859_1);
+
         String temp=new String(result, CharsetUtil.ISO_8859_1);
+        String b=new String(result,0,1, CharsetUtil.ISO_8859_1);
         byte[] a=temp.getBytes(CharsetUtil.ISO_8859_1);
         System.out.println(temp+"  "+temp.length());
 
