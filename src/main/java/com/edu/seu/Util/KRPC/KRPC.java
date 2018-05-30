@@ -1,9 +1,11 @@
-package com.edu.seu.Util.DhtQueries;
+package com.edu.seu.Util.KRPC;
 
 
 import com.edu.seu.Exception.BtException;
 import com.edu.seu.Util.ConvertUtil;
+import com.edu.seu.enums.KRPCYEnum;
 import io.netty.util.CharsetUtil;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
@@ -15,13 +17,7 @@ public class KRPC {
 
     private String className=this.getClass().getName();
 
-    //y键对应的三个值
-    public static enum yType{
-        QUERY,
-        RESPONSE,
-        ERROR,
-        UNKNOWN
-    }
+
 
     //定义键值对类型
     public class Entry implements Map.Entry<String,Object>{
@@ -87,29 +83,29 @@ public class KRPC {
     }
 
     //获得请求的类型
-    public yType getY() {
+    public KRPCYEnum getY() {
         if(y.getValue()==null)
-            return yType.UNKNOWN;
+            return KRPCYEnum.UNKNOWN;
         switch ((String)y.getValue()){
             case "q":
-                return yType.QUERY;
+                return KRPCYEnum.QUERY;
             case "r":
-                return yType.RESPONSE;
+                return KRPCYEnum.RESPONSE;
             case "e":
-                return yType.ERROR;
+                return KRPCYEnum.ERROR;
                 default:
-                    return yType.UNKNOWN;
+                    return KRPCYEnum.UNKNOWN;
         }
     }
 
     //设置请求类型
-    public void setY(yType type) {
-        if(type==yType.QUERY)
-            y.setValue("q");
-        if(type==yType.RESPONSE)
-            y.setValue("r");
-        if(type==yType.ERROR)
-            y.setValue("e");
+    public void setY(KRPCYEnum type) {
+        if(type==KRPCYEnum.QUERY)
+            y.setValue(KRPCYEnum.QUERY.getCode());
+        if(type==KRPCYEnum.RESPONSE)
+            y.setValue(KRPCYEnum.RESPONSE.getCode());
+        if(type==KRPCYEnum.ERROR)
+            y.setValue(KRPCYEnum.ERROR.getCode());
         throw new BtException(className+" -setY: 类型不符合要求");
     }
 
@@ -140,11 +136,19 @@ public class KRPC {
         e.setValue(value);
     }
 
-    public String getA() {
-        return (String)a.getValue();
+    public Map getA() {
+        return (Map) a.getValue();
     }
 
-    public void setA(Object value) {
+    public void setA(Map value) {
         a.setValue(value);
+    }
+
+    public Map getR() {
+        return (Map) r.getValue();
+    }
+
+    public void setR(Map value) {
+        r.setValue(value);
     }
 }

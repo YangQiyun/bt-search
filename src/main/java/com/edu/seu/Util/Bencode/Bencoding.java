@@ -1,4 +1,4 @@
-package com.edu.seu.Util;
+package com.edu.seu.Util.Bencode;
 
 import com.edu.seu.Exception.BtException;
 import io.netty.util.CharsetUtil;
@@ -13,7 +13,7 @@ import static com.edu.seu.Util.ConvertUtil.HexString2Byte;
 /*
 * 实现BE的编码方式
 * */
-public class BEncoding {
+public class Bencoding {
 
     public static  enum beType{
         ByteString,
@@ -71,7 +71,7 @@ public class BEncoding {
     }
 
     //进行类型选择编码
-    public   String encodingObject(Object value){
+    public String encodingObject(Object value){
         if(value instanceof String)
             return encodingByteString((String)value);
         if(value instanceof Integer)
@@ -258,13 +258,13 @@ public class BEncoding {
         throw new BtException(className+" - decodingObject: error in structure");
     }
 
-    public static BEncoding.btDecodeResult newStringResult(String value){
-        return new BEncoding.btDecodeResult(BEncoding.beType.ByteString,value);
+    public static Bencoding.btDecodeResult newStringResult(String value){
+        return new Bencoding.btDecodeResult(Bencoding.beType.ByteString,value);
     }
 
 
     public static void main(String [] args){
-        BEncoding bEncoding=new BEncoding();
+        Bencoding bEncoding=new Bencoding();
         Map<String,Object> content=new HashMap<>();
         content.put("name","yangyangyangyangyang");
         content.put("age",123);
@@ -278,7 +278,7 @@ public class BEncoding {
         int num=-0;
         String tt=String.valueOf(num);
         */
-        BEncoding.btDecodeResult result=bEncoding.decodingObject(bEncoding.encodingObject(content).getBytes(CharsetUtil.ISO_8859_1),0);
+        Bencoding.btDecodeResult result=bEncoding.decodingObject(bEncoding.encodingObject(content).getBytes(CharsetUtil.ISO_8859_1),0);
         if(result.type==beType.Dictionary){
             Map<String,btDecodeResult> temp= (Map<String, btDecodeResult>) result.value;
             for(Map.Entry<String,btDecodeResult> entry:temp.entrySet()){
@@ -295,14 +295,14 @@ public class BEncoding {
         byte[] gg=HexString2Byte(target);
         String temp=new String(gg, CharsetUtil.ISO_8859_1);
 
-        Map<String,BEncoding.btDecodeResult> map=new TreeMap<>();
-        map.put("t",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"aa"));
-        map.put("y",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"q"));
-        map.put("q",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"find_node"));
-        Map<String,BEncoding.btDecodeResult> small=new TreeMap<>();
-        small.put("id",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
-        small.put("target",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
-        map.put("a",new BEncoding.btDecodeResult(BEncoding.beType.Dictionary,small));
+        Map<String,Bencoding.btDecodeResult> map=new TreeMap<>();
+        map.put("t",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,"aa"));
+        map.put("y",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,"q"));
+        map.put("q",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,"find_node"));
+        Map<String,Bencoding.btDecodeResult> small=new TreeMap<>();
+        small.put("id",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,temp));
+        small.put("target",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,temp));
+        map.put("a",new Bencoding.btDecodeResult(Bencoding.beType.Dictionary,small));
         String what=bEncoding.encodingObject(map);
     }
 }

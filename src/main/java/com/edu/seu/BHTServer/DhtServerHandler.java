@@ -1,7 +1,7 @@
 package com.edu.seu.BHTServer;
 
 
-import com.edu.seu.Util.BEncoding;
+import com.edu.seu.Util.Bencode.Bencoding;
 import com.edu.seu.Util.ConvertUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -35,7 +35,7 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("DhtServerHandler.channelActive");
-        BEncoding bEncoding=new BEncoding();
+        Bencoding bEncoding=new Bencoding();
         String target="1619ecc9373c3639f4ee3e261638f29b33a6cbd6";
         byte[] result=HexString2Byte(target);
         String temp=new String(result, CharsetUtil.ISO_8859_1);
@@ -45,14 +45,14 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
         byte[] bytes3=":target20:".getBytes();
         byte[] byte4=ConvertUtil.getNode();
         byte[] bytes5="e1:q9:find_node1:t2:aa1:y1:qe".getBytes();
-        Map<String,BEncoding.btDecodeResult> map=new TreeMap<>();
-        map.put("t",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"aa"));
-        map.put("y",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"q"));
-        map.put("q",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,"find_node"));
-        Map<String,BEncoding.btDecodeResult> small=new TreeMap<>();
-        small.put("id",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
-        small.put("target",new BEncoding.btDecodeResult(BEncoding.beType.ByteString,temp));
-        map.put("a",new BEncoding.btDecodeResult(BEncoding.beType.Dictionary,small));
+        Map<String,Bencoding.btDecodeResult> map=new TreeMap<>();
+        map.put("t",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,"aa"));
+        map.put("y",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,"q"));
+        map.put("q",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,"find_node"));
+        Map<String,Bencoding.btDecodeResult> small=new TreeMap<>();
+        small.put("id",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,temp));
+        small.put("target",new Bencoding.btDecodeResult(Bencoding.beType.ByteString,temp));
+        map.put("a",new Bencoding.btDecodeResult(Bencoding.beType.Dictionary,small));
         String what=bEncoding.encodingObject(map);
         //ByteBuf buf=Unpooled.wrappedBuffer(bytes1,bytes2,bytes3,byte4,bytes5);
         ByteBuf buf=Unpooled.wrappedBuffer(what.getBytes(CharsetUtil.ISO_8859_1));
