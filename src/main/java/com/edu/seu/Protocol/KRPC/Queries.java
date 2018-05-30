@@ -1,8 +1,7 @@
-package com.edu.seu.Util.KRPC;
+package com.edu.seu.Protocol.KRPC;
 
 
-import com.edu.seu.Util.Bencode.BencodeSupport;
-import com.edu.seu.Util.Bencode.Bencoding;
+import com.edu.seu.Protocol.Bencode.BencodeSupport;
 import com.edu.seu.enums.DHTMethodQvalue;
 import com.edu.seu.enums.KRPCYEnum;
 

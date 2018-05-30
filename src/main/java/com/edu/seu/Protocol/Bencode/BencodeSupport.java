@@ -1,4 +1,4 @@
-package com.edu.seu.Util.Bencode;
+package com.edu.seu.Protocol.Bencode;
 
 import java.util.Map;
 

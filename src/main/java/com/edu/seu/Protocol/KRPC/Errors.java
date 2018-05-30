@@ -1,4 +1,4 @@
-package com.edu.seu.Util.KRPC;
+package com.edu.seu.Protocol.KRPC;
 
 
 import com.edu.seu.enums.KRPCErrorEnum;

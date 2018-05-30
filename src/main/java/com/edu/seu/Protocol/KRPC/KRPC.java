@@ -1,11 +1,9 @@
-package com.edu.seu.Util.KRPC;
+package com.edu.seu.Protocol.KRPC;
 
 
 import com.edu.seu.Exception.BtException;
-import com.edu.seu.Util.ConvertUtil;
 import com.edu.seu.enums.KRPCYEnum;
 import io.netty.util.CharsetUtil;
-import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
@@ -100,12 +98,18 @@ public class KRPC {
 
     //设置请求类型
     public void setY(KRPCYEnum type) {
-        if(type==KRPCYEnum.QUERY)
+        if(type==KRPCYEnum.QUERY) {
             y.setValue(KRPCYEnum.QUERY.getCode());
-        if(type==KRPCYEnum.RESPONSE)
+            return;
+        }
+        if(type==KRPCYEnum.RESPONSE) {
             y.setValue(KRPCYEnum.RESPONSE.getCode());
-        if(type==KRPCYEnum.ERROR)
+            return;
+        }
+        if(type==KRPCYEnum.ERROR) {
             y.setValue(KRPCYEnum.ERROR.getCode());
+            return;
+        }
         throw new BtException(className+" -setY: 类型不符合要求");
     }
 

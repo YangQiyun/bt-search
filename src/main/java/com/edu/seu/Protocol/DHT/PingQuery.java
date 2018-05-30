@@ -1,10 +1,8 @@
-package com.edu.seu.Util.DHT;
+package com.edu.seu.Protocol.DHT;
 
-import com.edu.seu.Configuration.InitConfig;
 import com.edu.seu.Exception.BtException;
-import com.edu.seu.Util.Bencode.BencodeSupport;
-import com.edu.seu.Util.Bencode.Bencoding;
-import com.edu.seu.Util.KRPC.Queries;
+import com.edu.seu.Protocol.Bencode.Bencoding;
+import com.edu.seu.Protocol.KRPC.Queries;
 import com.edu.seu.enums.DHTMethodQvalue;
 
 import java.util.Map;

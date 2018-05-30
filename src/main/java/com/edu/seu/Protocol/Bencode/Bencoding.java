@@ -1,4 +1,4 @@
-package com.edu.seu.Util.Bencode;
+package com.edu.seu.Protocol.Bencode;
 
 import com.edu.seu.Exception.BtException;
 import io.netty.util.CharsetUtil;

@@ -1,7 +1,8 @@
 package com.edu.seu.BHTServer;
 
 
-import com.edu.seu.Util.Bencode.Bencoding;
+import com.edu.seu.Configuration.InitConfig;
+import com.edu.seu.Protocol.Bencode.Bencoding;
 import com.edu.seu.Util.ConvertUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -57,7 +58,7 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
         //ByteBuf buf=Unpooled.wrappedBuffer(bytes1,bytes2,bytes3,byte4,bytes5);
         ByteBuf buf=Unpooled.wrappedBuffer(what.getBytes(CharsetUtil.ISO_8859_1));
         ctx.channel().writeAndFlush(new DatagramPacket(buf,new InetSocketAddress("dht.transmissionbt.com", 6881)));
-
+        log.info("channel active success");
     }
 
     @Override
@@ -65,7 +66,7 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
         log.info("DhtServerHandler.messageReceived");
         byte[] result=getBytes(msg);
 
-        ctx.writeAndFlush(getBytes(msg));
+        //ctx.writeAndFlush(getBytes(msg));
     }
 
     private byte[] getBytes(DatagramPacket packet) {
@@ -74,20 +75,22 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
         log.info("{}-收到消息,发送者:{},未解码消息内容:{}", packet.sender(), new String(bytes, CharsetUtil.ISO_8859_1));
+        Bencoding.btDecodeResult a=InitConfig.bEncoding.decodingObject(bytes,0);
         return bytes;
     }
 
 
-    //用这两个messagereceived就没用了
-    /*
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        super.channelRead(ctx,msg);
         log.info("channelRead");
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        super.channelReadComplete(ctx);
         log.info("channelReadComplete");
     }
-    */
+
 }

@@ -1,7 +1,7 @@
 package com.edu.seu.Configuration;
 
 
-import com.edu.seu.Util.Bencode.Bencoding;
+import com.edu.seu.Protocol.Bencode.Bencoding;
 import org.springframework.stereotype.Component;
 
 @Component

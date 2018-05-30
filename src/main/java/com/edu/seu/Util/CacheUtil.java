@@ -1,5 +1,6 @@
 package com.edu.seu.Util;
 
+import com.edu.seu.Protocol.HistoryInfo;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;

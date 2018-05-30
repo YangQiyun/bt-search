@@ -1,4 +1,4 @@
-package com.edu.seu.Util;
+package com.edu.seu.Protocol;
 
 import com.edu.seu.enums.DHTMethodQvalue;
 import com.edu.seu.enums.KRPCYEnum;
@@ -7,6 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+
+/*
+* 通信的临时缓存内容
+* */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,12 +1,12 @@
-package com.edu.seu.Util.DHT;
+package com.edu.seu.Protocol.DHT;
 
 import com.edu.seu.Configuration.InitConfig;
 import com.edu.seu.Exception.BtException;
-import com.edu.seu.Util.Bencode.Bencoding;
+import com.edu.seu.Protocol.Bencode.Bencoding;
 import com.edu.seu.Util.CacheUtil;
-import com.edu.seu.Util.HistoryInfo;
-import com.edu.seu.Util.KRPC.Queries;
-import com.edu.seu.Util.KRPC.Responses;
+import com.edu.seu.Protocol.HistoryInfo;
+import com.edu.seu.Protocol.KRPC.Queries;
+import com.edu.seu.Protocol.KRPC.Responses;
 import com.edu.seu.enums.DHTMethodQvalue;
 import com.edu.seu.enums.KRPCYEnum;
 
@@ -23,10 +23,10 @@ public class DhtArgsCheckUtil {
     private static Map<String, Bencoding.btDecodeResult> checkKRPCFormat(Bencoding.btDecodeResult result) {
         if (result.type != Bencoding.beType.Dictionary)
             throw new BtException("解析字节序出错非字典结构");
-        Map<String, Bencoding.btDecodeResult> resultMap = (Map<String, Bencoding.btDecodeResult>) result;
+        Map<String, Bencoding.btDecodeResult> resultMap = (Map<String, Bencoding.btDecodeResult>) result.value;
         if (!(resultMap.containsKey("t") && resultMap.containsKey("y")))
             throw new BtException("format error: lack of t or y");
-        return (Map<String, Bencoding.btDecodeResult>) result;
+        return (Map<String, Bencoding.btDecodeResult>) resultMap;
     }
 
     //解析出t对应的值
@@ -77,7 +77,7 @@ public class DhtArgsCheckUtil {
         if (aValue != null) {
             //a的对应值必须为dictionary类型
             if (aValue.type == Bencoding.beType.Dictionary) {
-                Map<String, Bencoding.btDecodeResult> value = (Map<String, Bencoding.btDecodeResult>) aValue;
+                Map<String, Bencoding.btDecodeResult> value = (Map<String, Bencoding.btDecodeResult>) aValue.value;
                 if (method.getCode().equals(DHTMethodQvalue.PING.getCode())) {
                     return PingQuery.decodeArgs(value);
                 }
@@ -101,7 +101,7 @@ public class DhtArgsCheckUtil {
         if (rValue != null) {
             //r的对应值必须为dictionary类型
             if(rValue.type==Bencoding.beType.Dictionary){
-                Map<String, Bencoding.btDecodeResult> value = (Map<String, Bencoding.btDecodeResult>) rValue;
+                Map<String, Bencoding.btDecodeResult> value = (Map<String, Bencoding.btDecodeResult>) rValue.value;
                 String tid= (String) result.get("t").value;
                 HistoryInfo history= CacheUtil.getAndRemove(tid);
                 if(history.getDhtMethodQvalue()==DHTMethodQvalue.PING){

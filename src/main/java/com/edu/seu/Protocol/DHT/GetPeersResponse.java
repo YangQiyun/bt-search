@@ -1,9 +1,8 @@
-package com.edu.seu.Util.DHT;
+package com.edu.seu.Protocol.DHT;
 
 import com.edu.seu.Exception.BtException;
-import com.edu.seu.Util.Bencode.BencodeSupport;
-import com.edu.seu.Util.Bencode.Bencoding;
-import com.edu.seu.Util.KRPC.Responses;
+import com.edu.seu.Protocol.Bencode.Bencoding;
+import com.edu.seu.Protocol.KRPC.Responses;
 
 import java.util.List;
 import java.util.Map;
