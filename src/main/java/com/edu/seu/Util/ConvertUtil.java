@@ -74,6 +74,28 @@ public class ConvertUtil {
         return stringBuilder.toString().toLowerCase();
     }
 
+    /**
+     * unsigned byte 转 int
+     */
+    public static int Byte2Int(byte data){
+        return data&0x0FF;
+    }
+
+
+    /**
+     * int 转 2个字节的byte[]
+     * 舍弃16位最高位,只保留16位,两个字节的低位.
+     * 这个字节数组的顺序需要是这样的.. 目前我收到其他节点的信息,他们的字节数组大多是这样的/
+     * 并且按照惯性思维,左边的(也就是byte[0]),的确应该是高位的.
+     */
+    public static byte[] int2TwoBytes(int value) {
+        byte[] des = new byte[2];
+        des[1] = (byte) (value & 0xff);
+        des[0] = (byte) ((value >> 8) & 0xff);
+        return des;
+    }
+
+
     public static byte[] getNode(){
         return HexString2Byte("909f9cbdedf4f7e29e820e3fd5e00a2965450b8a");
     }

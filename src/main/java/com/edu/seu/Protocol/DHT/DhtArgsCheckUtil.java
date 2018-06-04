@@ -26,7 +26,7 @@ public class DhtArgsCheckUtil {
         Map<String, Bencoding.btDecodeResult> resultMap = (Map<String, Bencoding.btDecodeResult>) result.value;
         if (!(resultMap.containsKey("t") && resultMap.containsKey("y")))
             throw new BtException("format error: lack of t or y");
-        return (Map<String, Bencoding.btDecodeResult>) resultMap;
+        return resultMap;
     }
 
     //解析出t对应的值
@@ -103,6 +103,7 @@ public class DhtArgsCheckUtil {
             if(rValue.type==Bencoding.beType.Dictionary){
                 Map<String, Bencoding.btDecodeResult> value = (Map<String, Bencoding.btDecodeResult>) rValue.value;
                 String tid= (String) result.get("t").value;
+                // TODO: 18-5-31 get and remove 
                 HistoryInfo history= CacheUtil.getAndRemove(tid);
                 if(history.getDhtMethodQvalue()==DHTMethodQvalue.PING){
                     return PingResponse.decodeArgs(value);

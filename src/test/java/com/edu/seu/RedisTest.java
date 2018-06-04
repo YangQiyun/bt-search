@@ -1,5 +1,6 @@
 package com.edu.seu;
 
+import lombok.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.Serializable;
 
 import static org.junit.Assert.*;
 
@@ -25,4 +28,23 @@ public class RedisTest {
         redisTemplate.opsForValue().set("test:set","testvalue");
         Assert.assertEquals("testvalue",redisTemplate.opsForValue().get("test:set"));
     }
+
+    @Test
+    public void serUser(){
+        User user=new User();
+        user.setUsername("yang");
+        user.setUserpassword(110);
+        redisTemplate.opsForValue().set("user",user);
+        Assert.assertEquals("yang",((User)redisTemplate.opsForValue().get("user")).getUsername());
+        Assert.assertSame(110,((User)redisTemplate.opsForValue().get("user")).getUserpassword());
+
+    }
+}
+
+@Data
+class User implements Serializable{
+
+    private String username;
+
+    private Integer userpassword;
 }
