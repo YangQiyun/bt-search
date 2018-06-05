@@ -1,9 +1,14 @@
 package com.edu.seu.Protocol.DHT;
 
+import com.edu.seu.Configuration.InitConfig;
 import com.edu.seu.Exception.BtException;
 import com.edu.seu.Protocol.Bencode.Bencoding;
 import com.edu.seu.Protocol.KRPC.Responses;
+import com.edu.seu.Protocol.RoutingTable;
+import com.edu.seu.Util.ConvertUtil;
+import io.netty.util.CharsetUtil;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,10 +37,17 @@ public class GetPeersResponse extends Responses implements DHT{
         setToken(token);
     }
 
+    public GetPeersResponse(String tid,String id,String nodeid,RoutingTable table, byte[] mCompactId){
+        setTid(tid);
+        setID(id);
+        setToken(InitConfig.token);
+        setCompactNode(nodeid,table,mCompactId);
+    }
+
     public GetPeersResponse(String id,String token,String nodes){
         setID(id);
         setToken(token);
-        setNodes(nodes);
+        setCompactNode(nodes);
     }
 
 
@@ -69,18 +81,43 @@ public class GetPeersResponse extends Responses implements DHT{
         setArgs(args);
     }
 
-    public String getNodes(){
+    public String getCompactNode(){
         Map<String,Object> args=getArgs();
         if(args==null)
             return null;
         return (String) args.get("nodes");
     }
 
-    public void setNodes(String token){
+
+    /**
+     * 通过nodeid找到路由表中的近八个节点，同时强行替换其中的一个节点为本节点
+     * 如果找不到八个节点则抛出异常
+     */
+    public void setCompactNode(String compactNode, RoutingTable table, byte[] mCompactId){
+        List<byte[]> get=table.get(compactNode.getBytes(CharsetUtil.ISO_8859_1));
+
+        get.set(0,mCompactId);
+
+        if(get==null)
+            throw new BtException(BtException.ERROR_CODE.FINDNODE_LEAK,"GetPeersResponse 路由表中不够八个节点");
+        StringBuilder content=new StringBuilder();
+        for(byte[] item:get){
+            content.append(new String(item,CharsetUtil.ISO_8859_1));
+        }
+        Map<String,String> args=getArgs();
+        if(args==null)
+            args=new TreeMap<>();
+        args.put("nodes",content.toString());
+        setArgs(args);
+
+    }
+
+
+    public void setCompactNode(String nodes){
         Map<String,Object> args=getArgs();
         if(args==null)
             args=new TreeMap<>();
-        args.put("nodes",token);
+        args.put("nodes",nodes);
         setArgs(args);
     }
 

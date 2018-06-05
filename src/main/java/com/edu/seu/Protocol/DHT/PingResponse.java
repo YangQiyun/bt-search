@@ -22,6 +22,11 @@ public class PingResponse extends Responses implements DHT {
         setID(id);
     }
 
+    public PingResponse(String tid,String id){
+        setID(id);
+        setTid(tid);
+    }
+
 
     @Override
     public String getID() {

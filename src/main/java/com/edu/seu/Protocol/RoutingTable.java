@@ -2,6 +2,8 @@ package com.edu.seu.Protocol;
 
 
 import com.edu.seu.Exception.BtException;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import lombok.AllArgsConstructor;
 import sun.misc.Unsafe;
 
@@ -21,9 +23,9 @@ public class RoutingTable {
     private final String className=this.getClass().getName();
 
     /**
-     * 本路由表的NodeID
+     * 本路由表的mCompactNode
      */
-    private byte[] mNodeID;
+    private byte[] mCompactNode;
 
     /**
      * bucket路由表的容器
@@ -54,13 +56,13 @@ public class RoutingTable {
 
     /* ---------------- Construct operations -------------- */
 
-    public RoutingTable(String nodeId){
-        this.mNodeID=HexString2Byte(nodeId);
+    public RoutingTable(String CompactNode){
+        this.mCompactNode=HexString2Byte(CompactNode);
         init();
     }
 
-    public RoutingTable(byte[] nodeId){
-        this.mNodeID=nodeId;
+    public RoutingTable(byte[] CompactNode){
+        this.mCompactNode=CompactNode;
         init();
     }
 
@@ -72,7 +74,7 @@ public class RoutingTable {
     public void init(){
         buckets=new Bucket[MAXIMUM_BUCKET];
         List<byte[]> content=new ArrayList<>(MAXI_K);
-        content.add(mNodeID);
+        content.add(mCompactNode);
         buckets[MAXIMUM_BUCKET-1]=new Bucket(0,1,content);
     }
 
@@ -101,7 +103,7 @@ public class RoutingTable {
                 }else {//如果本node节点存在
                     synchronized (b){
                         if(b==tabAt(bus,index)) {
-                            //如果近邻的记录个数少于八个直接加入
+                            //如果近邻记录个数少于八个直接加入
                             if (b.contentSize<MAXI_K) {
                                 b.content.add(id);
                                 b.contentSize++;
@@ -160,7 +162,7 @@ public class RoutingTable {
                 return target;
         }
         //找不到八个
-        return target;
+        return null;
 
     }
 
@@ -171,12 +173,12 @@ public class RoutingTable {
      */
     private int indexCode(byte[] id){
 
-        if(id==null||id.length!=20)
+        if(id==null||id.length!=26)
             throw new BtException(className+" - indexCode: id格式不符合规范");
 
         //i 20位byte t 临时变量 k 表示128 64 32 16 8 4 2 1 q 表示第几位1
         for(int i=0;i<20;i++){
-            int t=(Byte2Int(id[i])^Byte2Int(mNodeID[i]));
+            int t=(Byte2Int(id[i])^Byte2Int(mCompactNode[i]));
             if(t!=0) {
                 for (int k = 0x080,q=0; k != 0; k >>= 1, q++) {
                     if ((t&k) == k) {
@@ -237,6 +239,52 @@ public class RoutingTable {
         theUnsafeInstance.setAccessible(true);
         // return (Unsafe) theUnsafeInstance.get(null);是等价的
         return (Unsafe) theUnsafeInstance.get(Unsafe.class);
+    }
+
+    @AllArgsConstructor
+    static class mThread extends Thread{
+
+        private RoutingTable table;
+        private byte[] id;
+
+        @Override
+        public void run() {
+            table.put(id);
+        }
+    }
+
+    public static void main(String[] args){
+
+        String target="1619ecc9373c3639f4ee3e261638f29b33a6cbd6d6d6d6d6d6";
+        String append="1619ecc9373c3639f4ee3e261638f29b33a6cb";
+        RoutingTable routingTable=new RoutingTable(HexString2Byte(target));
+        //routingTable.put(HexString2Byte("4615ecc9373c3639f4ee3e261638f29b33a6cbd6"));
+        List<byte[]> result=null;
+        for(int i=10;i<100;i++){
+            String c=append+String.valueOf(i)+"d6d6d6d661d6";
+            new mThread(routingTable,HexString2Byte(c)).start();
+            if(i==48)
+                result=routingTable.get(HexString2Byte("1619ecc9373c3639e3f634ee3e2e361638e3f29b33e3a7cbd6e3"));
+        }
+        try {
+            Thread.currentThread().sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<String> stringList=new ArrayList<>();
+        for (byte[] argument:result){
+            stringList.add(Byte2HexString(argument));
+        }
+        int a=1;
+       // Assert.assertEquals(true,stringList.contains(target));
+
+//        byte[] re=HexString2Byte("909f9cbdedf4f7e29e820e3fd5e00a2965450b8a");
+//        ByteBuf resultBuf= Unpooled.wrappedBuffer(re);
+//        byte[] compactInfo=new byte[1];
+//        for(;;){
+//            resultBuf.readBytes(compactInfo);
+            //routingTable.put(compactInfo);
+
     }
 
 }

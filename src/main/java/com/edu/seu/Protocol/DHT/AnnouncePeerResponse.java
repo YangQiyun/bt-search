@@ -28,6 +28,11 @@ import java.util.TreeMap;
 
 public class AnnouncePeerResponse extends Responses implements DHT {
 
+    public AnnouncePeerResponse(String tid,String id){
+        setTid(tid);
+        setID(id);
+    }
+
     public AnnouncePeerResponse(String id){
         setID(id);
     }

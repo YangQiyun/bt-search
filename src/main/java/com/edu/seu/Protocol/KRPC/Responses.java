@@ -1,6 +1,7 @@
 package com.edu.seu.Protocol.KRPC;
 
 import com.edu.seu.Protocol.Bencode.BencodeSupport;
+import com.edu.seu.Util.IdUtil;
 import com.edu.seu.enums.KRPCYEnum;
 
 import java.util.Map;
@@ -18,8 +19,7 @@ public class Responses implements BencodeSupport{
 
     //构造函数对KRPC协议进行response初始化
     public Responses(){
-        // TODO: 18-5-28 动态的tid
-        mResponse.setT("aa");
+        mResponse.setT(IdUtil.getTransactionID());
         mResponse.setY(KRPCYEnum.RESPONSE);
         mResponse.setV("");
     }

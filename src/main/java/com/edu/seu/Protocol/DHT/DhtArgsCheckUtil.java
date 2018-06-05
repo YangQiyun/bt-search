@@ -3,8 +3,6 @@ package com.edu.seu.Protocol.DHT;
 import com.edu.seu.Configuration.InitConfig;
 import com.edu.seu.Exception.BtException;
 import com.edu.seu.Protocol.Bencode.Bencoding;
-import com.edu.seu.Util.CacheUtil;
-import com.edu.seu.Protocol.HistoryInfo;
 import com.edu.seu.Protocol.KRPC.Queries;
 import com.edu.seu.Protocol.KRPC.Responses;
 import com.edu.seu.enums.DHTMethodQvalue;
@@ -37,7 +35,7 @@ public class DhtArgsCheckUtil {
             if (tValue.type == Bencoding.beType.ByteString && ((String) tValue.value).length() == 2)
                 return (String) tValue.value;
         }
-        throw new BtException("format error: t对应value值格式出错");
+        throw new BtException("format error: t对应value值格式出错 :当前出错值为 "+(String)tValue.value);
     }
 
     //解析出y对应的值
@@ -102,21 +100,19 @@ public class DhtArgsCheckUtil {
             //r的对应值必须为dictionary类型
             if(rValue.type==Bencoding.beType.Dictionary){
                 Map<String, Bencoding.btDecodeResult> value = (Map<String, Bencoding.btDecodeResult>) rValue.value;
-                String tid= (String) result.get("t").value;
-                // TODO: 18-5-31 get and remove 
-                HistoryInfo history= CacheUtil.getAndRemove(tid);
-                if(history.getDhtMethodQvalue()==DHTMethodQvalue.PING){
+                if(method==DHTMethodQvalue.PING){
                     return PingResponse.decodeArgs(value);
                 }
-                if(history.getDhtMethodQvalue()==DHTMethodQvalue.FINDNODE){
+                if(method==DHTMethodQvalue.FINDNODE){
                     return FindNodeResponse.decodeArgs(value);
                 }
-                if(history.getDhtMethodQvalue()==DHTMethodQvalue.GETPEERS){
+                if(method==DHTMethodQvalue.GETPEERS){
                     return GetPeersResponse.decodeArgs(value);
                 }
-                if(history.getDhtMethodQvalue()==DHTMethodQvalue.ANNOUNCEPEER){
+                if(method==DHTMethodQvalue.ANNOUNCEPEER){
                     return AnnouncePeerResponse.decodeArgs(value);
                 }
+                return null;
             }
         }
         throw new BtException("format error: r对应value值格式出错");

@@ -1,6 +1,7 @@
 package com.edu.seu.Protocol.KRPC;
 
 
+import com.edu.seu.Util.IdUtil;
 import com.edu.seu.enums.KRPCErrorEnum;
 import com.edu.seu.enums.KRPCYEnum;
 
@@ -19,8 +20,7 @@ public class Errors {
 
     //构造函数对KRPC协议进行response初始化
     public Errors(){
-        // TODO: 18-5-28 动态的tid
-        mError.setT("aa");
+        mError.setT(IdUtil.getTransactionID());
         mError.setY(KRPCYEnum.ERROR);
         mError.setV("");
     }

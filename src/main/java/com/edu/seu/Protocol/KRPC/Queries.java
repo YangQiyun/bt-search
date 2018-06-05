@@ -2,6 +2,7 @@ package com.edu.seu.Protocol.KRPC;
 
 
 import com.edu.seu.Protocol.Bencode.BencodeSupport;
+import com.edu.seu.Util.IdUtil;
 import com.edu.seu.enums.DHTMethodQvalue;
 import com.edu.seu.enums.KRPCYEnum;
 
@@ -20,8 +21,7 @@ public class Queries implements BencodeSupport{
 
     //构造函数对KRPC协议进行query初始化
     public Queries(){
-        // TODO: 18-5-28 使用动态的tid
-        mQuery.setT("aa");
+        mQuery.setT(IdUtil.getTransactionID());
         mQuery.setY(KRPCYEnum.QUERY);
         mQuery.setV("");
     }

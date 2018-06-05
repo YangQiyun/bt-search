@@ -1,5 +1,7 @@
 package com.edu.seu;
 
+import com.edu.seu.Protocol.TransactionInfo;
+import com.edu.seu.enums.DHTMethodQvalue;
 import lombok.Data;
 import org.junit.Assert;
 import org.junit.Test;
@@ -38,6 +40,14 @@ public class RedisTest {
         Assert.assertEquals("yang",((User)redisTemplate.opsForValue().get("user")).getUsername());
         Assert.assertSame(110,((User)redisTemplate.opsForValue().get("user")).getUserpassword());
 
+    }
+
+    //127.0.0.1:6379> config set stop-writes-on-bgsave-error no
+    @Test
+    public void TransactionInfo(){
+        TransactionInfo transactionInfo=new TransactionInfo(DHTMethodQvalue.FINDNODE,"aa");
+        redisTemplate.opsForValue().set(transactionInfo.getTid(),transactionInfo);
+        Assert.assertEquals(DHTMethodQvalue.FINDNODE,((TransactionInfo)redisTemplate.opsForValue().get("aa")).getDhtMethodQvalue());
     }
 }
 

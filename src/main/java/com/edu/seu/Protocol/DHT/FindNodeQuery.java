@@ -93,7 +93,7 @@ public class FindNodeQuery extends Queries implements DHT{
         for(Map.Entry<String,Bencoding.btDecodeResult> entry:resultMap.entrySet()){
             if(entry.getKey().equals("t")){
                 setT((String) entry.getValue().value);
-                // TODO: 18-5-28 对应的消息编码ID的消除
+
                 continue;
             }
             if(entry.getKey().equals("y")){

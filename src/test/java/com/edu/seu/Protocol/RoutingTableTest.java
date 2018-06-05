@@ -43,26 +43,6 @@ public class RoutingTableTest {
 
     @Test
     public void get() {
-        String target="1619ecc9373c3639f4ee3e261638f29b33a6cbd6";
-        String append="19ecc9373c3639f4ee3e261638f29b33a6cbd6";
-        RoutingTable routingTable=new RoutingTable(HexString2Byte(target));
-        //routingTable.put(HexString2Byte("4615ecc9373c3639f4ee3e261638f29b33a6cbd6"));
-        List<byte[]> result=null;
-        for(int i=10;i<100;i++){
-            String c=String.valueOf(i)+append;
-            new mThread(routingTable,HexString2Byte(c)).start();
-            if(i==48)
-                result=routingTable.get(HexString2Byte("1619ecc9373c3639f4ee3e261638f29b33a7cbd6"));
-        }
-        try {
-            Thread.currentThread().sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        List<String> stringList=new ArrayList<>();
-        for (byte[] argument:result){
-            stringList.add(Byte2HexString(argument));
-        }
-        Assert.assertEquals(true,stringList.contains(target));
+
     }
 }

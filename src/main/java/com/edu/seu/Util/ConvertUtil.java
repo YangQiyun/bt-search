@@ -1,8 +1,11 @@
 package com.edu.seu.Util;
 
+import com.edu.seu.Exception.BtException;
 import io.netty.util.CharsetUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
 public class ConvertUtil {
@@ -54,6 +57,7 @@ public class ConvertUtil {
         return value;
     }
 
+
     /*
     * 将byte二进制串转化为HexString格式
     * */
@@ -95,9 +99,77 @@ public class ConvertUtil {
         return des;
     }
 
+    /**
+     * byte[4] 转 string with "." split ip
+     */
+    public static String bytes2Ip(byte[] ipBytes) {
+        if (ipBytes.length != 4) {
+            throw new BtException("bytes2Ip失败,bytes长度不为4.当前长度:" + ipBytes.length);
+        }
+        return String.join(".", Integer.toString(ipBytes[0] & 0xFF), Integer.toString(ipBytes[1] & 0xFF)
+                , Integer.toString(ipBytes[2] & 0xFF), Integer.toString(ipBytes[3] & 0xFF));
+    }
+
+
+    /**
+     *   string with "." split ip 转 byte[4]
+     */
+    public static byte[] ip2Bytes(String ip) {
+        if (StringUtils.isBlank(ip)) {
+            throw new BtException("ip2Bytes失败,ip为空");
+        }
+        String[] ips = ip.split("\\.");
+        if (ips.length != 4) {
+            throw new BtException("ip2Bytes失败,ip的段数长度不为4.ip:" + ip);
+        }
+        return new byte[]{
+                Integer.valueOf( ips[0]).byteValue(),
+                Integer.valueOf( ips[1]).byteValue(),
+                Integer.valueOf( ips[2]).byteValue(),
+                Integer.valueOf( ips[3]).byteValue(),
+        };
+    }
+
+    /**
+     * byte[2] 转 int port
+     * 大端序
+     */
+    public static int bytes2Port(byte[] portBytes) {
+        if (portBytes.length != 2) {
+            throw new BtException("bytes2Port失败,bytes长度不为2.当前长度:" + portBytes.length);
+        }
+        return portBytes[1] & 0xFF | (portBytes[0] & 0xFF) << 8;
+    }
 
     public static byte[] getNode(){
         return HexString2Byte("909f9cbdedf4f7e29e820e3fd5e00a2965450b8a");
+    }
+
+    /**
+     * nodeId 和 address合并成一个compactInfo的字节数组
+     */
+    public static byte[] nodeAndaddress(byte[] nodeId, InetSocketAddress address){
+
+        //nodeIds
+        byte[] nodeBytes = new byte[26];
+        System.arraycopy(nodeId, 0, nodeBytes, 0, 20);
+
+        //ip
+        String ip=address.getAddress().toString().substring(1);
+        String[] ips = StringUtils.split(ip, ".");
+        if(ips.length != 4)
+            throw new BtException("该节点IP有误,节点信息:");
+        byte[] ipBytes = new byte[4];
+        for (int i = 0; i < 4; i++) {
+            ipBytes[i] = (byte) Integer.parseInt(ips[i]);
+        }
+        System.arraycopy(ipBytes, 0, nodeBytes, 20, 4);
+
+        //ports
+        byte[] portBytes = ConvertUtil.int2TwoBytes(address.getPort());
+        System.arraycopy(portBytes, 0, nodeBytes, 24, 2);
+
+        return nodeBytes;
     }
 
     public static void main(String []args){
