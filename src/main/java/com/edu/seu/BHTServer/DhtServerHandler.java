@@ -112,7 +112,7 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
                     switch (Qmethod){
                         //2.1.1 PING请求，直接回应
                         case PING:
-                            log.info("收到PING请求");
+                            //log.info("收到PING请求");
                             PingQuery pingQuery= (PingQuery) parseA(btMap,Qmethod);
                             response=new PingResponse(pingQuery.getTid(),nodeId);
                             break;
@@ -125,7 +125,7 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
                             break;
                         //2.1.3 GETPEERS请求
                         case GETPEERS:
-                            log.info("收到GETPEERS请求");
+                            //log.info("收到GETPEERS请求");
                             GetPeersQuery getPeersQuery= (GetPeersQuery) parseA(btMap,Qmethod);
                             String infohashCompactNode=new String(ConvertUtil.nodeAndaddress(getPeersQuery.getInfoHash().getBytes(charset),msg.sender()),charset);
                             response=new GetPeersResponse(getPeersQuery.getTid(),nodeId,infohashCompactNode,routingTable,mCompactNodeid);
@@ -187,8 +187,18 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
         }catch (BtException e){
             if(e.getError_code()==BtException.ERROR_CODE.FINDNODE_LEAK||e.getError_code()==FINDNODE_NO_NODES)
                 return;
+            else if(e.getError_code()==BtException.ERROR_CODE.PARSET_ERROR||e.getError_code()==BtException.ERROR_CODE.FORMAT_ERROR){
+                //log.error(new String(result,charset));
+            }
             else
                 log.error(e.getMessage());
+            return;
+        }catch (Exception e){
+            StackTraceElement[] stackTraceElements=e.getStackTrace();
+            for (StackTraceElement element:stackTraceElements){
+                log.error(element.toString());
+            }
+            return;
         }
 
     }

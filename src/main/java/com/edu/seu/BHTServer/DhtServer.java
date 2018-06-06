@@ -84,7 +84,13 @@ public class DhtServer {
                     .option(ChannelOption.SO_SNDBUF, 10000 * 1024)// 设置UDP写缓冲区为3M
                     .handler(dhtServerHandlers.get(index));//配置的业务处理类
             bootstrap.bind(port).sync().channel().closeFuture().await();
-        }finally {
+        }catch (Exception e){
+            StackTraceElement[] stackTraceElements=e.getStackTrace();
+            for (StackTraceElement element:stackTraceElements){
+                log.error(element.toString());
+            }
+        }
+        finally {
             if(eventLoopGroup != null)
                 eventLoopGroup.shutdownGracefully();
         }

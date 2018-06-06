@@ -11,8 +11,8 @@ public class PingQueryTest {
 
     @Test
     public void getID() {
-        PingQueryTest queryTest=new PingQueryTest();
-        queryTest.getID();
+        //PingQueryTest queryTest=new PingQueryTest();
+        //queryTest.getID();
 
     }
 

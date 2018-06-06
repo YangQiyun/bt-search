@@ -1,0 +1,112 @@
+2018-06-06 15:28:39.183  INFO 4116 --- [main] com.edu.seu.BtSearchApplication          : Starting BtSearchApplication on MindComputer with PID 4116 (/home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar/bt-search.jar started by mind in /home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar)
+2018-06-06 15:28:39.185  INFO 4116 --- [main] com.edu.seu.BtSearchApplication          : No active profile set, falling back to default profiles: default
+2018-06-06 15:28:39.223  INFO 4116 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:28:39 CST 2018]; root of context hierarchy
+2018-06-06 15:28:39.357 ERROR 4116 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.IllegalArgumentException: No auto configuration classes found in META-INF/spring.factories. If you are using a custom packaging, make sure that file is correct.
+	at org.springframework.util.Assert.notEmpty(Assert.java:450) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.getCandidateConfigurations(AutoConfigurationImportSelector.java:160) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.selectImports(AutoConfigurationImportSelector.java:96) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector$AutoConfigurationGroup.process(AutoConfigurationImportSelector.java:386) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser$DeferredImportSelectorGrouping.getImports(ConfigurationClassParser.java:830) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.processDeferredImportSelectors(ConfigurationClassParser.java:563) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:188) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:316) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:233) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:273) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:93) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:694) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:532) ~[bt-search.jar:na]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140) ~[bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243) [bt-search.jar:na]
+	at com.edu.seu.BtSearchApplication.main(BtSearchApplication.java:10) [bt-search.jar:na]
+
+2018-06-06 15:28:39.358  INFO 4116 --- [main] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:28:39 CST 2018]; root of context hierarchy
+2018-06-06 15:30:18.392  INFO 4289 --- [main] com.edu.seu.BtSearchApplication          : Starting BtSearchApplication on MindComputer with PID 4289 (/home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar/bt-search.jar started by mind in /home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar)
+2018-06-06 15:30:18.394  INFO 4289 --- [main] com.edu.seu.BtSearchApplication          : No active profile set, falling back to default profiles: default
+2018-06-06 15:30:18.438  INFO 4289 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:30:18 CST 2018]; root of context hierarchy
+2018-06-06 15:30:18.586 ERROR 4289 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.IllegalArgumentException: No auto configuration classes found in META-INF/spring.factories. If you are using a custom packaging, make sure that file is correct.
+	at org.springframework.util.Assert.notEmpty(Assert.java:450) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.getCandidateConfigurations(AutoConfigurationImportSelector.java:160) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.selectImports(AutoConfigurationImportSelector.java:96) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector$AutoConfigurationGroup.process(AutoConfigurationImportSelector.java:386) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser$DeferredImportSelectorGrouping.getImports(ConfigurationClassParser.java:830) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.processDeferredImportSelectors(ConfigurationClassParser.java:563) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:188) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:316) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:233) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:273) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:93) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:694) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:532) ~[bt-search.jar:na]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140) ~[bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243) [bt-search.jar:na]
+	at com.edu.seu.BtSearchApplication.main(BtSearchApplication.java:10) [bt-search.jar:na]
+
+2018-06-06 15:30:18.587  INFO 4289 --- [main] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:30:18 CST 2018]; root of context hierarchy
+2018-06-06 15:33:22.411  INFO 4503 --- [main] com.edu.seu.BtSearchApplication          : Starting BtSearchApplication on MindComputer with PID 4503 (/home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar/bt-search.jar started by mind in /home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar)
+2018-06-06 15:33:22.413  INFO 4503 --- [main] com.edu.seu.BtSearchApplication          : No active profile set, falling back to default profiles: default
+2018-06-06 15:33:22.454  INFO 4503 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:33:22 CST 2018]; root of context hierarchy
+2018-06-06 15:33:22.585 ERROR 4503 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.IllegalArgumentException: No auto configuration classes found in META-INF/spring.factories. If you are using a custom packaging, make sure that file is correct.
+	at org.springframework.util.Assert.notEmpty(Assert.java:450) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.getCandidateConfigurations(AutoConfigurationImportSelector.java:160) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.selectImports(AutoConfigurationImportSelector.java:96) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector$AutoConfigurationGroup.process(AutoConfigurationImportSelector.java:386) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser$DeferredImportSelectorGrouping.getImports(ConfigurationClassParser.java:830) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.processDeferredImportSelectors(ConfigurationClassParser.java:563) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:188) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:316) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:233) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:273) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:93) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:694) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:532) ~[bt-search.jar:na]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140) ~[bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243) [bt-search.jar:na]
+	at com.edu.seu.BtSearchApplication.main(BtSearchApplication.java:10) [bt-search.jar:na]
+
+2018-06-06 15:33:22.586  INFO 4503 --- [main] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:33:22 CST 2018]; root of context hierarchy
+2018-06-06 15:37:46.799  INFO 4858 --- [main] com.edu.seu.BtSearchApplication          : Starting BtSearchApplication on MindComputer with PID 4858 (/home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar/bt-search.jar started by mind in /home/mind/project/intellijProject/bt-search/out/artifacts/bt_search_jar)
+2018-06-06 15:37:46.801  INFO 4858 --- [main] com.edu.seu.BtSearchApplication          : No active profile set, falling back to default profiles: default
+2018-06-06 15:37:46.835  INFO 4858 --- [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:37:46 CST 2018]; root of context hierarchy
+2018-06-06 15:37:46.965 ERROR 4858 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.IllegalArgumentException: No auto configuration classes found in META-INF/spring.factories. If you are using a custom packaging, make sure that file is correct.
+	at org.springframework.util.Assert.notEmpty(Assert.java:450) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.getCandidateConfigurations(AutoConfigurationImportSelector.java:160) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector.selectImports(AutoConfigurationImportSelector.java:96) ~[bt-search.jar:na]
+	at org.springframework.boot.autoconfigure.AutoConfigurationImportSelector$AutoConfigurationGroup.process(AutoConfigurationImportSelector.java:386) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser$DeferredImportSelectorGrouping.getImports(ConfigurationClassParser.java:830) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.processDeferredImportSelectors(ConfigurationClassParser.java:563) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:188) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:316) ~[bt-search.jar:na]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:233) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:273) ~[bt-search.jar:na]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:93) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:694) ~[bt-search.jar:na]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:532) ~[bt-search.jar:na]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:140) ~[bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:759) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:395) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:327) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255) [bt-search.jar:na]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243) [bt-search.jar:na]
+	at com.edu.seu.BtSearchApplication.main(BtSearchApplication.java:10) [bt-search.jar:na]
+
+2018-06-06 15:37:46.966  INFO 4858 --- [main] ConfigServletWebServerApplicationContext : Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@5bf0d49: startup date [Wed Jun 06 15:37:46 CST 2018]; root of context hierarchy

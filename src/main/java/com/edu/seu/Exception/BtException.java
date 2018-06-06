@@ -15,7 +15,9 @@ public class BtException extends RuntimeException{
     public static enum ERROR_CODE{
         FINDNODE_LEAK,
         NORMAL_ERROR,
-        FINDNODE_NO_NODES
+        FINDNODE_NO_NODES,
+        PARSET_ERROR,
+        FORMAT_ERROR
     }
 
     public BtException(ERROR_CODE error,String message){

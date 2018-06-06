@@ -26,7 +26,7 @@ public class DhtArgsCheckUtil {
             throw new BtException("解析字节序出错非字典结构");
         Map<String, Bencoding.btDecodeResult> resultMap = (Map<String, Bencoding.btDecodeResult>) result.value;
         if (!(resultMap.containsKey("t") && resultMap.containsKey("y")))
-            throw new BtException("format error: lack of t or y");
+            throw new BtException(BtException.ERROR_CODE.FORMAT_ERROR,"format error: lack of t or y");
         return resultMap;
     }
 
@@ -38,7 +38,7 @@ public class DhtArgsCheckUtil {
             if (tValue.type == Bencoding.beType.ByteString && ((String) tValue.value).length() == 2)
                 return (String) tValue.value;
         }
-        throw new BtException("format error: t对应value值格式出错 :当前出错值为 "+(String)tValue.value);
+        throw new BtException(BtException.ERROR_CODE.PARSET_ERROR,"format error: t对应value值格式出错 :当前出错值长度是：{},值为：{}"+((String)tValue.value).length()+tValue.value);
     }
 
     //解析出y对应的值
