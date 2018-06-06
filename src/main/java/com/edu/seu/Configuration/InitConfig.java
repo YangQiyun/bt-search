@@ -52,6 +52,10 @@ public class InitConfig {
     @Autowired
     public FindNodeTask findNodeTask;
 
+    /**
+     * 本机ip地址
+     */
+    public String ip;
 
     /**
      * 获取初始化地址

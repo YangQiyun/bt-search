@@ -7,7 +7,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -42,7 +41,7 @@ public class DhtServer {
         dhtServerHandlers=new ArrayList<>(ports.size());
         for (int i = 0; i < ports.size(); i++) {
             final int index = i;
-            dhtServerHandlers.add(i,new DhtServerHandler(redisTemplate,IdUtil.generateNodeId(),new InetSocketAddress("223.3.175.181",ports.get(index)),config));
+            dhtServerHandlers.add(i,new DhtServerHandler(redisTemplate,IdUtil.generateNodeId(),new InetSocketAddress(config.ip,ports.get(index)),config));
             new Thread(()->run(ports.get(index),index)).start();
         }
 

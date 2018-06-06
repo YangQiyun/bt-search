@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static com.edu.seu.Exception.BtException.ERROR_CODE.FINDNODE_NO_NODES;
 
 
 /*
@@ -52,10 +53,11 @@ public class FindNodeResponse extends Responses implements DHT{
     public void setCompactNode(String compactNode, RoutingTable table, byte[] mCompactNodeid){
         List<byte[]> get=table.get(compactNode.getBytes(CharsetUtil.ISO_8859_1));
 
-        get.set(0,mCompactNodeid);
-
         if(get==null)
             throw new BtException(BtException.ERROR_CODE.FINDNODE_LEAK,"find node 路由表中不够八个节点");
+
+        get.set(0,mCompactNodeid);
+
         StringBuilder content=new StringBuilder();
         for(byte[] item:get){
             content.append(new String(item,CharsetUtil.ISO_8859_1));
@@ -104,7 +106,7 @@ public class FindNodeResponse extends Responses implements DHT{
 
     public static Responses decodeArgs(Map<String, Bencoding.btDecodeResult> args) {
         //格式初步确认
-        if(args.size()==2&&args.containsKey("id")&&args.containsKey("nodes")){
+        if(args.size()>=2&&args.containsKey("id")&&args.containsKey("nodes")){
             //参数类型确认
             if(args.get("id").type==Bencoding.beType.ByteString
                     &&args.get("nodes").type==Bencoding.beType.ByteString){
@@ -112,11 +114,14 @@ public class FindNodeResponse extends Responses implements DHT{
             }
         }
 
-        log.error("FindNodeResponse格式出错,参数类型个数有{},是否存在id{},是否存在nodes{},另一个的参数是{},{}",
+        if(args.size()==1&&args.containsKey("id"))
+            throw new BtException(FINDNODE_NO_NODES,"FindNodeResponse返回无近邻点");
+        log.error("FindNodeResponse格式出错,参数类型个数有{},是否存在id{},是否存在nodes{},另一个的参数是{},{},感觉是v{}",
                 args.size(),args.get("id")!=null?"true":"false",
                 args.get("nodes")!=null?"true":"false",
                 args.get("p")==null?null:args.get("p").value,
-                args.get("ip")==null?null:args.get("ip").value);
+                args.get("ip")==null?null:args.get("ip").value,
+                args.get("v")==null?null:(String)args.get("ip").value);
         throw new BtException("FindNodeResponse格式出错");
     }
 }

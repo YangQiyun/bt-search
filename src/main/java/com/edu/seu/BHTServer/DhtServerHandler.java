@@ -32,6 +32,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static com.edu.seu.Exception.BtException.ERROR_CODE.FINDNODE_NO_NODES;
 import static com.edu.seu.Protocol.DHT.DhtArgsCheckUtil.*;
 import static com.edu.seu.Util.ConvertUtil.HexString2Byte;
 
@@ -117,15 +118,17 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
                             break;
                         //2.1.2 FINDNODE请求，得到的路由表信息返回值不超过八个直接就丢弃该请求
                         case FINDNODE:
-                            log.info("收到FINDNODE请求");
+                            //log.info("收到FINDNODE请求");
                             FindNodeQuery findNodeQuery = (FindNodeQuery) parseA(btMap, Qmethod);
-                            response = new FindNodeResponse(findNodeQuery.getTid(), nodeId, findNodeQuery.getTarget(), routingTable,mCompactNodeid);
+                            String targetCompactNode=new String(ConvertUtil.nodeAndaddress(findNodeQuery.getTarget().getBytes(charset),msg.sender()),charset);
+                            response = new FindNodeResponse(findNodeQuery.getTid(), nodeId,targetCompactNode, routingTable,mCompactNodeid);
                             break;
                         //2.1.3 GETPEERS请求
                         case GETPEERS:
                             log.info("收到GETPEERS请求");
                             GetPeersQuery getPeersQuery= (GetPeersQuery) parseA(btMap,Qmethod);
-                            response=new GetPeersResponse(getPeersQuery.getTid(),nodeId,getPeersQuery.getInfoHash(),routingTable,mCompactNodeid);
+                            String infohashCompactNode=new String(ConvertUtil.nodeAndaddress(getPeersQuery.getInfoHash().getBytes(charset),msg.sender()),charset);
+                            response=new GetPeersResponse(getPeersQuery.getTid(),nodeId,infohashCompactNode,routingTable,mCompactNodeid);
                             break;
                         //2.1.4 ANNOUNCEPEER请求，对内容进行存储
                         case ANNOUNCEPEER:
@@ -141,6 +144,9 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
                     //2.3 如果是DHT的应答
                     TransactionInfo transactionInfo= (TransactionInfo) redisTemplate.opsForValue().get(tid);
                     redisTemplate.delete(tid);
+                    //没有记录则直接丢弃
+                    if(transactionInfo==null)
+                        return;
                     switch (transactionInfo.getDhtMethodQvalue()){
                         //2.3.1 对于PING的应答，更新路由表
                         case PING:
@@ -173,13 +179,13 @@ public class DhtServerHandler extends SimpleChannelInboundHandler<DatagramPacket
                     break;
                 case ERROR:
                     Errors error=parseE(btMap);
-                    log.info("收到KRPC的ERROR答复,错误码{},错误描述{}",error.getError().getCode(),error.getReceivedContent());
+                    //log.info("收到KRPC的ERROR答复,错误码{},错误描述{}",error.getError().getCode(),error.getReceivedContent());
                     break;
                 case UNKNOWN:
                     break;
             }
         }catch (BtException e){
-            if(e.getError_code()==BtException.ERROR_CODE.FINDNODE_LEAK)
+            if(e.getError_code()==BtException.ERROR_CODE.FINDNODE_LEAK||e.getError_code()==FINDNODE_NO_NODES)
                 return;
             else
                 log.error(e.getMessage());
