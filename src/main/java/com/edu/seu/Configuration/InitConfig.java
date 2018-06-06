@@ -2,6 +2,7 @@ package com.edu.seu.Configuration;
 
 
 import com.edu.seu.Protocol.Bencode.Bencoding;
+import com.edu.seu.Task.FindNodeTask;
 import com.edu.seu.Util.ConvertUtil;
 import com.edu.seu.Util.IdUtil;
 import lombok.Data;
@@ -23,8 +24,6 @@ import java.util.List;
 public class InitConfig {
 
 
-    public int port=8000;
-
     public static Bencoding bEncoding=new Bencoding();
 
     /**
@@ -33,7 +32,7 @@ public class InitConfig {
     private List<Integer> ports = new ArrayList<>();
 
     /**初始地址*/
-    private List<String> initAddresses = new LinkedList<>();
+    private  List<String> initAddresses = new LinkedList<>();
 
     /**
      * nodeIds
@@ -44,6 +43,15 @@ public class InitConfig {
      * 我的token内容
      */
     public static String token="yang";
+
+    /**
+     * findnode请求并发线程数量
+     */
+    public static int FINDNODE_TASK_MAXTHREAD=15;
+
+    @Autowired
+    public FindNodeTask findNodeTask;
+
 
     /**
      * 获取初始化地址

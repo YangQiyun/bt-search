@@ -2,6 +2,7 @@ package com.edu.seu.Protocol;
 
 
 import com.edu.seu.Exception.BtException;
+import com.edu.seu.Util.ConvertUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.AllArgsConstructor;
@@ -174,7 +175,7 @@ public class RoutingTable {
     private int indexCode(byte[] id){
 
         if(id==null||id.length!=26)
-            throw new BtException(className+" - indexCode: id格式不符合规范");
+            throw new BtException(className+" - indexCode: id格式不符合规范"+id.length+" 二进制内容为"+ ConvertUtil.Byte2HexString(id));
 
         //i 20位byte t 临时变量 k 表示128 64 32 16 8 4 2 1 q 表示第几位1
         for(int i=0;i<20;i++){

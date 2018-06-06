@@ -18,6 +18,10 @@ public class Errors {
 
     private KRPC mError=new KRPC();
 
+
+
+    public String receivedContent;
+
     //构造函数对KRPC协议进行response初始化
     public Errors(){
         mError.setT(IdUtil.getTransactionID());
@@ -28,6 +32,8 @@ public class Errors {
     public void setTid(String tid){
         mError.setT(tid);
     }
+
+
 
     public void setError(KRPCErrorEnum errorType){
         List<Object> args=mError.getE();
@@ -46,5 +52,13 @@ public class Errors {
                 return errorEnum;
         }
         return KRPCErrorEnum.UNKNOWN;
+    }
+
+    public String getReceivedContent() {
+        return receivedContent;
+    }
+
+    public void setReceivedContent(String receivedContent) {
+        this.receivedContent = receivedContent;
     }
 }

@@ -42,7 +42,7 @@ public class DhtServer {
         dhtServerHandlers=new ArrayList<>(ports.size());
         for (int i = 0; i < ports.size(); i++) {
             final int index = i;
-            dhtServerHandlers.add(i,new DhtServerHandler(redisTemplate,IdUtil.generateNodeId(),new InetSocketAddress("223.3.175.181",ports.get(index))));
+            dhtServerHandlers.add(i,new DhtServerHandler(redisTemplate,IdUtil.generateNodeId(),new InetSocketAddress("223.3.175.181",ports.get(index)),config));
             new Thread(()->run(ports.get(index),index)).start();
         }
 
@@ -58,13 +58,14 @@ public class DhtServer {
      * 保证UDP服务端开启,即使运行出错
      */
     private void run(int port,int index) {
-        //while (true){
+        while (true){
             try {
                 run1(port,index);
+                Thread.sleep(100);
             } catch (Exception e) {
                 log.error("服务器端口:{},发生未知异常,准备重新启动.异常:{}",port,e.getMessage(),e);
             }
-       // }
+        }
     }
 
     /**

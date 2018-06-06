@@ -6,11 +6,15 @@ import com.edu.seu.Protocol.KRPC.Responses;
 import com.edu.seu.Protocol.RoutingTable;
 import com.edu.seu.Util.ConvertUtil;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+
 
 /*
  * DHT协议中的find_node请求
@@ -26,6 +30,7 @@ import java.util.TreeMap;
  *
  * Response = {"t":"aa", "y":"r", "r": {"id":"0123456789abcdefghij", "nodes": "def456..."}}
  * */
+@Slf4j
 public class FindNodeResponse extends Responses implements DHT{
 
     public FindNodeResponse(String tid,String mid,String compactNode,RoutingTable table,byte[] mCompactNodeid){
@@ -106,6 +111,12 @@ public class FindNodeResponse extends Responses implements DHT{
                 return new FindNodeResponse((String) args.get("id").value,(String) args.get("nodes").value);
             }
         }
+
+        log.error("FindNodeResponse格式出错,参数类型个数有{},是否存在id{},是否存在nodes{},另一个的参数是{},{}",
+                args.size(),args.get("id")!=null?"true":"false",
+                args.get("nodes")!=null?"true":"false",
+                args.get("p")==null?null:args.get("p").value,
+                args.get("ip")==null?null:args.get("ip").value);
         throw new BtException("FindNodeResponse格式出错");
     }
 }

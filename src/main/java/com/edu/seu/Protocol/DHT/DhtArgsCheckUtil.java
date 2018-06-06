@@ -3,11 +3,14 @@ package com.edu.seu.Protocol.DHT;
 import com.edu.seu.Configuration.InitConfig;
 import com.edu.seu.Exception.BtException;
 import com.edu.seu.Protocol.Bencode.Bencoding;
+import com.edu.seu.Protocol.KRPC.Errors;
 import com.edu.seu.Protocol.KRPC.Queries;
 import com.edu.seu.Protocol.KRPC.Responses;
 import com.edu.seu.enums.DHTMethodQvalue;
+import com.edu.seu.enums.KRPCErrorEnum;
 import com.edu.seu.enums.KRPCYEnum;
 
+import java.util.List;
 import java.util.Map;
 
 public class DhtArgsCheckUtil {
@@ -117,4 +120,28 @@ public class DhtArgsCheckUtil {
         }
         throw new BtException("format error: r对应value值格式出错");
     }
+
+    //解析出e对应的值
+    public static Errors parseE(Map<String, Bencoding.btDecodeResult> result) {
+        Bencoding.btDecodeResult eValue = result.get(KRPCYEnum.ERROR.getCode());
+        Errors errorResp=new Errors();
+        if (eValue != null) {
+            //e的对应值必须为List类型，并且是指定的四种代表值
+            if (eValue.type == Bencoding.beType.List) {
+                List<Bencoding.btDecodeResult> list= (List<Bencoding.btDecodeResult>) eValue.value;
+                if(list.get(0).type==Bencoding.beType.Integer){
+                    for(KRPCErrorEnum errorEnum:KRPCErrorEnum.values()){
+                        if(errorEnum.getCode()==(int)list.get(0).value)
+                            errorResp.setError(errorEnum);
+                    }
+                }
+                if(list.get(1).type==Bencoding.beType.ByteString){
+                    errorResp.setReceivedContent((String) list.get(1).value);
+                }
+                return errorResp;
+            }
+        }
+        throw new BtException("format error: e对应value值格式出错");
+    }
+
 }
